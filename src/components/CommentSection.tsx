@@ -5,9 +5,11 @@ import { formatDate } from '../hooks'
 interface Props {
   comments: Comment[]
   onAdd: (content: string) => Promise<void>
+  canDelete: (c: Comment) => boolean
+  onDelete: (c: Comment) => Promise<void>
 }
 
-export default function CommentSection({ comments, onAdd }: Props) {
+export default function CommentSection({ comments, onAdd, canDelete, onDelete }: Props) {
   const [text, setText] = useState('')
 
   async function handleSubmit(e: FormEvent) {
@@ -23,7 +25,11 @@ export default function CommentSection({ comments, onAdd }: Props) {
       <ul className="mt-3 space-y-3">
         {comments.map((c) => (
           <li key={c.id} className="rounded-md bg-slate-50 p-3 text-sm">
-            <p className="font-medium">{c.authorName} <span className="ml-2 text-xs font-normal text-slate-600">{formatDate(c.createdAt)}</span></p>
+            <p className="font-medium">{c.authorName} <span className="ml-2 text-xs font-normal text-slate-600">{formatDate(c.createdAt)}</span>
+              {canDelete(c) && (
+                <button type="button" className="ml-3 text-xs text-red-700 underline" onClick={() => onDelete(c)}>삭제</button>
+              )}
+            </p>
             <p className="mt-1 whitespace-pre-wrap">{c.content}</p>
           </li>
         ))}

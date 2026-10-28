@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import type { Author, User } from './types'
 
 // 서비스 함수를 불러와 로딩 상태와 함께 돌려주는 작은 훅
 export function useAsync<T>(load: () => Promise<T>, deps: unknown[] = []) {
@@ -23,4 +24,9 @@ export function useAsync<T>(load: () => Promise<T>, deps: unknown[] = []) {
 
 export function formatDate(iso: string) {
   return new Date(iso).toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })
+}
+
+// 글·댓글 작성자 정보 (비로그인 미리보기에서는 방문자)
+export function authorOf(user: User | null): Author {
+  return user ? { id: user.id, name: user.name } : { id: 'guest', name: '방문자(미리보기)' }
 }

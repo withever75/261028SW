@@ -37,11 +37,19 @@ export interface User {
   name: string
   email: string
   role: 'admin' | 'member'
+  allowed: boolean // 관리자가 승인한 사용자만 토론 이용 가능
+}
+
+// 글·댓글 작성자 정보
+export interface Author {
+  id: string
+  name: string
 }
 
 export interface Comment {
   id: string
   postId: string
+  authorId: string
   authorName: string
   content: string
   createdAt: string // ISO 날짜 문자열
@@ -52,9 +60,11 @@ export interface Post {
   topic: string // 연구 주제(게시판)
   title: string
   content: string
+  authorId: string
   authorName: string
   createdAt: string
-  comments: Comment[]
+  commentCount: number
+  comments: Comment[] // 목록에서는 비어 있고, 상세(getPost)에서만 채워짐
 }
 
 // 새 글/댓글 작성 시 입력값

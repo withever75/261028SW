@@ -1,0 +1,43 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function userDoc() { return get(/databases/$(database)/documents/users/$(request.auth.uid)).data; }
+    // 관리자가 승인(allowed: true)한 로그인 사용자
+    function isAllowed() {
+      return signedIn()
+        && exists(/databases/$(database)/documents/users/$(request.auth.uid))
+        && userDoc().allowed == true;
+    }
+    function isAdmin() { return isAllowed() && userDoc().role == 'admin'; }
+
+    // 내 정보: 처음 로그인하면 "미승인 일반 회원"으로만 만들 수 있음. 승인·관리자 지정은 Firebase 콘솔에서.
+    match /users/{uid} {
+      allow read: if signedIn() && (request.auth.uid == uid || isAdmin());
+      allow create: if signedIn() && request.auth.uid == uid
+        && request.resource.data.allowed == false
+        && request.resource.data.role == 'member';
+      allow update, delete: if isAdmin();
+    }
+
+    match /posts/{postId} {
+      allow read: if isAllowed();
+      allow create: if isAllowed()
+        && request.resource.data.authorId == request.auth.uid
+        && request.resource.data.commentCount == 0;
+      // 수정·삭제는 작성자 또는 관리자. 댓글 수(commentCount)만 바꾸는 것은 승인 회원 모두 가능.
+      allow update: if isAllowed() && (
+        resource.data.authorId == request.auth.uid || isAdmin()
+        || request.resource.data.diff(resource.data).affectedKeys().hasOnly(['commentCount']));
+      allow delete: if isAllowed() && (resource.data.authorId == request.auth.uid || isAdmin());
+
+      match /comments/{commentId} {
+        allow read: if isAllowed();
+        allow create: if isAllowed() && request.resource.data.authorId == request.auth.uid;
+        allow delete: if isAllowed() && (
+          resource.data.authorId == request.auth.uid || isAdmin()
+          || get(/databases/$(database)/documents/posts/$(postId)).data.authorId == request.auth.uid);
+      }
+    }
+  }
+}

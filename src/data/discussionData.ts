@@ -1,9 +1,12 @@
-import type { Post } from '../types'
+import type { Comment, Post } from '../types'
+
+// 샘플 글은 작성자 ID·댓글 수가 없는 간단한 형태
+export type SamplePost = Omit<Post, 'authorId' | 'commentCount' | 'comments'> & { comments: Omit<Comment, 'authorId'>[] }
 
 // 토론 게시판 샘플 데이터 (가상의 내용이며 실제 연구 결과·개인정보가 아닙니다)
 export const discussionTopics = ['정서 조절 연구', '자립준비 프로그램', '부모교육 모형']
 
-export const samplePosts: Post[] = [
+export const samplePosts: SamplePost[] = [
   {
     id: 'p1',
     topic: '정서 조절 연구',

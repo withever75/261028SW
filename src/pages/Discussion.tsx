@@ -5,17 +5,19 @@ import Loading from '../components/Loading'
 import PreviewBanner from '../components/PreviewBanner'
 import PostForm from '../components/PostForm'
 import { addPost, getPosts, getTopics } from '../services/discussionService'
-import { formatDate, useAsync } from '../hooks'
+import { useAuth } from '../context/AuthContext'
+import { authorOf, formatDate, useAsync } from '../hooks'
 import type { NewPostInput } from '../types'
 
 export default function Discussion() {
+  const { user } = useAuth()
   const posts = useAsync(getPosts)
   const topics = useAsync(getTopics)
   const [writing, setWriting] = useState(false)
   const [topic, setTopic] = useState('')
 
   async function handleSubmit(input: NewPostInput) {
-    await addPost(input)
+    await addPost(input, authorOf(user))
     posts.setData(await getPosts())
     setWriting(false)
   }
@@ -45,7 +47,7 @@ export default function Discussion() {
               <h2 className="mt-2 text-lg font-semibold">
                 <Link to={`/discussion/${p.id}`} className="text-navy-800 hover:underline">{p.title}</Link>
               </h2>
-              <p className="mt-1 text-xs text-slate-600">{p.authorName} · {formatDate(p.createdAt)} · 댓글 {p.comments.length}</p>
+              <p className="mt-1 text-xs text-slate-600">{p.authorName} · {formatDate(p.createdAt)} · 댓글 {p.commentCount}</p>
             </li>
           ))}
         </ul>

@@ -2,8 +2,9 @@
 
 사회복지학(아동복지·행동과학) 교수의 연구·수업 자료를 모아 보여주고, 대학원생과 연구를 토론하는 웹사이트입니다.
 
-> **현재는 1단계(미리보기)입니다.** Firebase·로그인 없이 동작하며, 토론 글은 새로고침하면 사라집니다.
-> 2단계에서 Firebase(무료 Spark 요금제)의 Google 로그인과 Firestore를 연결할 예정입니다.
+> 코드는 Firebase(무료 Spark 요금제)의 Google 로그인과 Firestore 연동까지 준비되어 있습니다.
+> **Firebase 설정값(환경변수)이 없으면 자동으로 "미리보기" 모드**(샘플 데이터, 새로고침 시 초기화)로 동작하고,
+> 설정값을 넣으면 실제 로그인·저장 모드로 바뀝니다.
 
 ## 로컬에서 실행하기
 ```bash
@@ -39,7 +40,23 @@ public/        _redirects, 아이콘
 
 따옴표 안의 글자만 바꾸면 됩니다. 논문·자료는 파일 업로드가 아니라 **링크**(Google Drive 등)로 연결합니다.
 
-## 2단계 대비 설계
-- 화면은 `src/services/`의 함수(`getProjects`, `getPosts`, `addPost`, `addComment` 등)만 호출합니다.
-- Firebase 연동 시 `services/` 안의 파일과 `context/AuthContext.tsx`만 교체하면 됩니다.
-- 사용할 변수 이름은 `.env.example`에 있습니다. 실제 값은 `.env`에 적고 GitHub에는 올리지 않습니다.
+## Firebase 연결하기 (무료 Spark 요금제)
+1. https://console.firebase.google.com 에서 프로젝트를 만들고(요금제는 Spark 그대로), **웹 앱**을 추가해 설정값을 받습니다.
+2. **Authentication → 로그인 방법 → Google**을 사용 설정합니다. 승인된 도메인에 Netlify 주소를 추가합니다.
+3. **Firestore Database**를 만듭니다(프로덕션 모드). **규칙** 탭에 이 저장소의 `firestore.rules` 내용을 붙여넣고 게시합니다.
+4. 설정값을 넣습니다.
+   - 내 컴퓨터: `.env.example`을 복사해 `.env`를 만들고 값을 채웁니다(`.env`는 GitHub에 올라가지 않습니다).
+   - Netlify: **Site configuration → Environment variables**에 같은 이름(`VITE_FIREBASE_...` 6개)으로 입력하고 다시 배포합니다.
+5. 사이트에서 Google 로그인을 한 번 합니다. Firestore에 `users/내UID` 문서가 생깁니다.
+6. **관리자 지정:** Firebase 콘솔 → Firestore → `users` → 내 문서에서 `allowed`를 `true`, `role`을 `admin`으로 바꿉니다.
+7. **대학원생 승인:** 대학원생이 로그인하면 `users`에 문서가 생깁니다. `allowed`를 `true`로 바꿔 주면 토론에 참여할 수 있습니다.
+
+### 권한 규칙
+- 연구·수업·소개는 누구나 볼 수 있습니다(코드에 포함된 공개 자료).
+- 토론은 **로그인 + 교수님 승인(allowed: true)** 한 사용자만 읽고 쓸 수 있습니다.
+- 글·댓글 삭제는 작성자 또는 관리자만 가능합니다(글 작성자는 자기 글의 댓글도 삭제 가능).
+- 파일 업로드(Storage), Cloud Functions는 사용하지 않습니다. 논문·자료는 링크로 연결합니다.
+
+## 구조 설명
+- 화면은 `src/services/`의 함수만 호출합니다. 데이터 출처(Firestore/샘플)는 서비스 파일 안에서만 결정됩니다.
+- 로그인 상태는 `src/context/AuthContext.tsx`, Firebase 초기화는 `src/firebase.ts`에 있습니다.
