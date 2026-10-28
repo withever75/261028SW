@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import ScholarLink from '../components/ScholarLink'
 import PageTitle from '../components/PageTitle'
 import { profile } from '../data/aboutData'
 
@@ -29,6 +30,7 @@ export default function About() {
             <div><dt className="inline font-medium">연구실: </dt><dd className="inline">{profile.contact.office}</dd></div>
             <div><dt className="inline font-medium">전화: </dt><dd className="inline">{profile.contact.phone}</dd></div>
           </dl>
+          <div className="mt-3"><ScholarLink /></div>
         </Section>
       </div>
     </>

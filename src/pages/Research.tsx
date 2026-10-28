@@ -1,4 +1,6 @@
 import { useMemo, useState } from 'react'
+import PublicationList from '../components/PublicationList'
+import ScholarLink from '../components/ScholarLink'
 import PageTitle from '../components/PageTitle'
 import Loading from '../components/Loading'
 import ProjectCard from '../components/ProjectCard'
@@ -23,6 +25,7 @@ export default function Research() {
   return (
     <>
       <PageTitle title="연구" desc="진행 중이거나 완료된 연구 프로젝트입니다." />
+      <div className="mb-6"><ScholarLink /></div>
       <div className="mb-4">
         <label htmlFor="search" className="mb-1 block text-sm font-medium">검색</label>
         <input id="search" type="search" className="input" placeholder="제목, 요약, 키워드로 검색" value={query} onChange={(e) => setQuery(e.target.value)} />
@@ -47,6 +50,7 @@ export default function Research() {
           {filtered.map((p) => <ProjectCard key={p.id} project={p} />)}
         </div>
       )}
+      <PublicationList />
     </>
   )
 }

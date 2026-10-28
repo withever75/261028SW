@@ -77,3 +77,13 @@ export interface NewCommentInput {
   postId: string
   content: string
 }
+
+// 논문·저술 (Google Scholar에서 복사해 data 파일에 직접 입력)
+export interface Publication {
+  id: string
+  title: string
+  authors: string
+  venue: string // 학술지/학회명
+  year: number
+  url?: string // 논문 링크 (DOI, KCI, Scholar 등)
+}

@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import ScholarLink from '../components/ScholarLink'
 import PageTitle from '../components/PageTitle'
 import Loading from '../components/Loading'
 import { profile } from '../data/aboutData'
@@ -28,6 +29,7 @@ export default function Home() {
         <div className="relative mt-6 flex flex-wrap gap-3">
           <Link to="/research" className="rounded-full bg-white px-5 py-2 text-sm font-semibold text-navy-900 hover:bg-navy-50">연구 보기</Link>
           <Link to="/discussion" className="rounded-full border border-white px-5 py-2 text-sm font-semibold text-white hover:bg-white/10">토론 참여</Link>
+          <ScholarLink className="rounded-full border border-white/60 px-5 py-2 text-sm font-semibold text-white hover:bg-white/10" />
         </div>
       </section>
 
