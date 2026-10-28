@@ -3,6 +3,15 @@ import type { ResearchProject } from '../types'
 // ✏️ 내 연구 내용을 바꾸려면 이 파일을 수정하세요. (샘플 데이터입니다)
 export const researchProjects: ResearchProject[] = [
   {
+    id: 'r-aces-scoping',
+    title: 'ACEs Scoping Review',
+    summary: '아동기 부정적 경험(Adverse Childhood Experiences, ACEs)에 관한 선행연구를 체계적으로 탐색하고 연구 동향과 공백을 정리하는 스코핑 리뷰.',
+    status: '진행 중',
+    keywords: ['ACEs', '스코핑 리뷰', '아동복지'],
+    links: [],
+    period: '2026.10 ~',
+  },
+  {
     id: 'r1',
     title: '학령기 아동의 정서 조절 능력과 또래관계 연구',
     summary: '초등학생의 정서 조절 전략이 또래관계의 질에 어떤 영향을 주는지 살펴보는 종단 연구 (샘플).',
