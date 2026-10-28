@@ -7,6 +7,7 @@ import Discussion from './pages/Discussion'
 import PostDetail from './pages/PostDetail'
 import DiscussionGate from './components/DiscussionGate'
 import Qna from './pages/Qna'
+import ProjectDetail from './pages/ProjectDetail'
 import About from './pages/About'
 import NotFound from './pages/NotFound'
 
@@ -16,6 +17,7 @@ export default function App() {
       <Route element={<Layout />}>
         <Route path="/" element={<Home />} />
         <Route path="/research" element={<Research />} />
+        <Route path="/research/:id" element={<ProjectDetail />} />
         <Route path="/teaching" element={<Teaching />} />
         <Route element={<DiscussionGate />}>
           <Route path="/discussion" element={<Discussion />} />

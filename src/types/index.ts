@@ -103,3 +103,24 @@ export interface NewQuestionInput {
   title: string
   content: string
 }
+
+// 프로젝트 자료실: 논문과 작업 중인 파일은 파일 업로드가 아니라 외부 링크로 등록
+export type MaterialKind = '논문' | '작업 파일'
+export interface Material {
+  id: string
+  projectId: string
+  kind: MaterialKind
+  title: string
+  url: string
+  note: string // 저자·연도, 파일 설명 등
+  authorId: string
+  authorName: string
+  createdAt: string
+}
+export interface NewMaterialInput {
+  projectId: string
+  kind: MaterialKind
+  title: string
+  url: string
+  note: string
+}
