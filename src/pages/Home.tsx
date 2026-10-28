@@ -18,11 +18,17 @@ export default function Home() {
   const courses = useAsync(getCourses)
   return (
     <>
-      <PageTitle title="홈" />
-      <section className="rounded-lg bg-navy-800 px-6 py-10 text-white">
-        <p className="text-sm text-navy-100">{profile.title}</p>
-        <h2 className="mt-1 text-2xl font-bold">{profile.name}</h2>
-        <p className="mt-2">{profile.tagline}</p>
+      <PageTitle title="홈" hidden />
+      <section className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-navy-700 to-navy-900 px-6 py-14 text-white md:px-12">
+        <span aria-hidden="true" className="absolute -right-10 -top-10 h-48 w-48 rounded-full bg-accent-500/30" />
+        <span aria-hidden="true" className="absolute -bottom-16 right-24 h-40 w-40 rounded-full bg-white/10" />
+        <p className="relative inline-block rounded-full bg-white/15 px-3 py-1 text-sm font-medium">{profile.title}</p>
+        <h2 className="relative mt-3 text-4xl font-extrabold md:text-5xl">{profile.name}</h2>
+        <p className="relative mt-3 text-lg text-navy-100">{profile.tagline}</p>
+        <div className="relative mt-6 flex flex-wrap gap-3">
+          <Link to="/research" className="rounded-full bg-white px-5 py-2 text-sm font-semibold text-navy-900 hover:bg-navy-50">연구 보기</Link>
+          <Link to="/discussion" className="rounded-full border border-white px-5 py-2 text-sm font-semibold text-white hover:bg-white/10">토론 참여</Link>
+        </div>
       </section>
 
       <section aria-labelledby="shortcut-title" className="mt-8">
