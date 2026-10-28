@@ -87,3 +87,19 @@ export interface Publication {
   year: number
   url?: string // 논문 링크 (DOI, KCI, Scholar 등)
 }
+
+// 대학원생 질문과 교수 답변
+export interface Question {
+  id: string
+  title: string
+  content: string
+  authorId: string
+  authorName: string
+  createdAt: string
+  answer?: string // 교수(관리자)가 작성
+  answeredAt?: string
+}
+export interface NewQuestionInput {
+  title: string
+  content: string
+}

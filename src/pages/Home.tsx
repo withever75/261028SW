@@ -11,6 +11,7 @@ const shortcuts = [
   { to: '/research', title: '연구', desc: '진행 중인 연구 프로젝트' },
   { to: '/teaching', title: '수업', desc: '과목별 주차 자료' },
   { to: '/discussion', title: '토론', desc: '연구 주제별 토론 게시판' },
+  { to: '/qna', title: '질문', desc: '교수님께 질문하기' },
   { to: '/about', title: '소개', desc: '약력과 연락처' },
 ]
 
@@ -35,7 +36,7 @@ export default function Home() {
 
       <section aria-labelledby="shortcut-title" className="mt-8">
         <h2 id="shortcut-title" className="mb-3 text-lg font-semibold text-navy-900">바로가기</h2>
-        <ul className="grid grid-cols-2 gap-3 md:grid-cols-4">
+        <ul className="grid grid-cols-2 gap-3 md:grid-cols-5">
           {shortcuts.map((s) => (
             <li key={s.to}>
               <Link to={s.to} className="card block h-full hover:border-navy-700">

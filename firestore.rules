@@ -20,6 +20,18 @@ service cloud.firestore {
       allow update, delete: if isAdmin();
     }
 
+    // 대학원생 질문과 교수 답변: 승인 회원이 질문, 답변(answer)은 관리자만
+    match /questions/{qid} {
+      allow read: if isAllowed();
+      allow create: if isAllowed()
+        && request.resource.data.authorId == request.auth.uid
+        && !('answer' in request.resource.data);
+      allow update: if isAdmin() || (isAllowed()
+        && resource.data.authorId == request.auth.uid
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['title', 'content']));
+      allow delete: if isAllowed() && (resource.data.authorId == request.auth.uid || isAdmin());
+    }
+
     match /posts/{postId} {
       allow read: if isAllowed();
       allow create: if isAllowed()
