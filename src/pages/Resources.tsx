@@ -3,7 +3,7 @@ import PageTitle from '../components/PageTitle'
 import Loading from '../components/Loading'
 import PreviewBanner from '../components/PreviewBanner'
 import { resourceStore } from '../services/resourceService'
-import { useAsync, useOwnerId } from '../hooks'
+import { saveErrorMessage, useAsync, useOwnerId } from '../hooks'
 import type { ResourceKind } from '../types'
 
 const kinds: ResourceKind[] = ['연구', '수업']
@@ -38,7 +38,12 @@ export default function Resources() {
     }
     setError('')
     const tags = tagText.split(',').map((t) => t.trim()).filter(Boolean)
-    await resourceStore.add(ownerId, { kind, title: title.trim(), url: url.trim(), note: note.trim(), tags })
+    try {
+      await resourceStore.add(ownerId, { kind, title: title.trim(), url: url.trim(), note: note.trim(), tags })
+    } catch (err) {
+      setError(saveErrorMessage(err))
+      return
+    }
     setTitle('')
     setUrl('')
     setNote('')

@@ -40,3 +40,12 @@ export function formatDate(iso: string) {
 export function authorOf(user: User | null): Author {
   return user ? { id: user.id, name: user.name } : { id: 'guest', name: '방문자(미리보기)' }
 }
+
+// 저장 실패 시 화면에 보여줄 쉬운 안내 문구
+export function saveErrorMessage(e: unknown): string {
+  const code = (e as { code?: string })?.code
+  if (code === 'permission-denied') {
+    return '저장 권한이 없습니다. Firebase 규칙을 게시했는지, 내 계정이 승인(allowed: true)되었는지 확인해 주세요.'
+  }
+  return `저장하지 못했습니다. 잠시 후 다시 시도해 주세요. (${code ?? '알 수 없는 오류'})`
+}

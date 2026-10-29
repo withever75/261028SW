@@ -3,7 +3,7 @@ import PageTitle from '../components/PageTitle'
 import Loading from '../components/Loading'
 import PreviewBanner from '../components/PreviewBanner'
 import { diaryStore } from '../services/diaryService'
-import { formatDate, today, useAsync, useOwnerId } from '../hooks'
+import { formatDate, saveErrorMessage, today, useAsync, useOwnerId } from '../hooks'
 import type { DiaryEntry } from '../types'
 
 export default function Diary() {
@@ -13,6 +13,7 @@ export default function Diary() {
   const [date, setDate] = useState(today())
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+  const [error, setError] = useState('')
 
   const refresh = async () => setData(await diaryStore.list(ownerId))
 
@@ -27,8 +28,14 @@ export default function Diary() {
     e.preventDefault()
     if (!content.trim()) return
     const input = { date, title: title.trim(), content: content.trim() }
-    if (editing) await diaryStore.update(editing.id, input)
-    else await diaryStore.add(ownerId, input)
+    try {
+      if (editing) await diaryStore.update(editing.id, input)
+      else await diaryStore.add(ownerId, input)
+    } catch (err) {
+      setError(saveErrorMessage(err))
+      return
+    }
+    setError('')
     reset()
     await refresh()
   }
@@ -69,6 +76,7 @@ export default function Diary() {
           <label htmlFor="d-content" className="mb-1 block text-sm font-medium">내용</label>
           <textarea id="d-content" rows={6} className="input" value={content} onChange={(e) => setContent(e.target.value)} required />
         </div>
+        {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
         <div className="flex gap-2">
           <button type="submit" className="btn">{editing ? '수정 저장' : '저장'}</button>
           {editing && <button type="button" className="btn-outline" onClick={reset}>취소</button>}

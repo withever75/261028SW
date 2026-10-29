@@ -3,7 +3,7 @@ import PageTitle from '../components/PageTitle'
 import Loading from '../components/Loading'
 import PreviewBanner from '../components/PreviewBanner'
 import { todoStore } from '../services/todoService'
-import { formatDate, today, useAsync, useOwnerId } from '../hooks'
+import { formatDate, saveErrorMessage, today, useAsync, useOwnerId } from '../hooks'
 import type { TodoCategory } from '../types'
 
 const categories: TodoCategory[] = ['연구', '수업', '기타']
@@ -16,13 +16,20 @@ export default function Todos() {
   const [due, setDue] = useState('')
   const [category, setCategory] = useState<TodoCategory>('연구')
   const [filter, setFilter] = useState<Filter>('진행 중')
+  const [error, setError] = useState('')
 
   const refresh = async () => setData(await todoStore.list(ownerId))
 
   async function handleAdd(e: FormEvent) {
     e.preventDefault()
     if (!text.trim()) return
-    await todoStore.add(ownerId, { text: text.trim(), done: false, due, category })
+    try {
+      await todoStore.add(ownerId, { text: text.trim(), done: false, due, category })
+    } catch (err) {
+      setError(saveErrorMessage(err))
+      return
+    }
+    setError('')
     setText('')
     setDue('')
     await refresh()
@@ -54,6 +61,7 @@ export default function Todos() {
             </select>
           </div>
         </div>
+        {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
         <button type="submit" className="btn">추가</button>
       </form>
 
