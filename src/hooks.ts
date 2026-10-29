@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { useAuth } from './context/AuthContext'
 import type { Author, User } from './types'
 
 // 서비스 함수를 불러와 로딩 상태와 함께 돌려주는 작은 훅
@@ -20,6 +21,15 @@ export function useAsync<T>(load: () => Promise<T>, deps: unknown[] = []) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps)
   return { data, loading, setData }
+}
+
+// 오늘 날짜 (YYYY-MM-DD, 내 컴퓨터 기준)
+export const today = () => new Date().toLocaleDateString('sv-SE')
+
+// 로그인 사용자의 개인 공간 ID (미리보기에서는 guest)
+export function useOwnerId() {
+  const { user } = useAuth()
+  return user?.id ?? 'guest'
 }
 
 export function formatDate(iso: string) {

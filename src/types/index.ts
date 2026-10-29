@@ -124,3 +124,31 @@ export interface NewMaterialInput {
   url: string
   note: string
 }
+
+// ---- 개인 공간 (본인만 볼 수 있음) ----
+export interface DiaryEntry {
+  id: string
+  date: string // YYYY-MM-DD
+  title: string
+  content: string
+  createdAt: string
+}
+export type TodoCategory = '연구' | '수업' | '기타'
+export interface Todo {
+  id: string
+  text: string
+  done: boolean
+  due: string // YYYY-MM-DD, 없으면 빈 문자열
+  category: TodoCategory
+  createdAt: string
+}
+export type ResourceKind = '연구' | '수업'
+export interface ResourceItem {
+  id: string
+  kind: ResourceKind
+  title: string
+  url: string // 외부 링크(없으면 빈 문자열)
+  note: string
+  tags: string[]
+  createdAt: string
+}

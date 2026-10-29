@@ -20,7 +20,7 @@ export default function Header() {
           <span aria-hidden="true" className="inline-block h-3 w-3 rounded-full bg-accent-500" />
           사회복지학 연구 아카이브
         </Link>
-        {showNav && <nav aria-label="주요 메뉴" className="hidden md:block">
+        {showNav && <nav aria-label="주요 메뉴" className="hidden lg:block">
           <ul className="flex gap-1">
             {navItems.map((n) => (
               <li key={n.to}>
@@ -35,7 +35,7 @@ export default function Header() {
           <LoginButton />
           {showNav && <button
             type="button"
-            className="rounded border border-slate-300 px-3 py-2 text-sm md:hidden"
+            className="rounded border border-slate-300 px-3 py-2 text-sm lg:hidden"
             aria-expanded={open}
             aria-controls="mobile-menu"
             onClick={() => setOpen(!open)}
@@ -45,7 +45,7 @@ export default function Header() {
         </div>
       </div>
       {showNav && open && (
-        <nav id="mobile-menu" aria-label="모바일 메뉴" className="border-t border-slate-200 px-4 py-2 md:hidden">
+        <nav id="mobile-menu" aria-label="모바일 메뉴" className="border-t border-slate-200 px-4 py-2 lg:hidden">
           <ul>
             {navItems.map((n) => (
               <li key={n.to}>

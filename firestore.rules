@@ -43,6 +43,17 @@ service cloud.firestore {
       allow delete: if isAllowed() && (resource.data.authorId == request.auth.uid || isAdmin());
     }
 
+    // 개인 공간(일기·할 일·자료 모음): 본인만 읽고 쓸 수 있음 (관리자도 다른 사람 것은 볼 수 없음)
+    match /{col}/{docId} {
+      allow read, delete: if isAllowed() && col in ['diaries', 'todos', 'resources']
+        && resource.data.authorId == request.auth.uid;
+      allow create: if isAllowed() && col in ['diaries', 'todos', 'resources']
+        && request.resource.data.authorId == request.auth.uid;
+      allow update: if isAllowed() && col in ['diaries', 'todos', 'resources']
+        && resource.data.authorId == request.auth.uid
+        && request.resource.data.authorId == request.auth.uid;
+    }
+
     match /posts/{postId} {
       allow read: if isAllowed();
       allow create: if isAllowed()

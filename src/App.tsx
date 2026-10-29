@@ -8,6 +8,9 @@ import Teaching from './pages/Teaching'
 import Discussion from './pages/Discussion'
 import PostDetail from './pages/PostDetail'
 import Qna from './pages/Qna'
+import Diary from './pages/Diary'
+import Todos from './pages/Todos'
+import Resources from './pages/Resources'
 import About from './pages/About'
 import NotFound from './pages/NotFound'
 
@@ -24,6 +27,9 @@ export default function App() {
           <Route path="/discussion" element={<Discussion />} />
           <Route path="/discussion/:id" element={<PostDetail />} />
           <Route path="/qna" element={<Qna />} />
+          <Route path="/diary" element={<Diary />} />
+          <Route path="/todos" element={<Todos />} />
+          <Route path="/resources" element={<Resources />} />
           <Route path="/about" element={<About />} />
           <Route path="*" element={<NotFound />} />
         </Route>
