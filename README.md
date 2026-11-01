@@ -21,7 +21,7 @@ npm run dev
 ## 폴더 구조
 ```
 src/
-  pages/       화면(홈, 연구, 수업, 토론, 글 상세, 소개)
+  pages/       화면(홈, 연구, 토론, 일기, 할 일, 자료 모음 등)
   components/  작은 화면 조각(헤더, 카드, 폼 등)
   services/    데이터를 가져오는 함수 모음 ← 2단계에서 여기만 교체
   data/        샘플 데이터 ← 내용을 바꾸는 곳
@@ -34,8 +34,7 @@ public/        _redirects, 아이콘
 | 바꾸고 싶은 내용 | 수정할 파일 |
 |---|---|
 | 연구 프로젝트 | `src/data/researchData.ts` |
-| 수업·주차별 자료 | `src/data/teachingData.ts` |
-| 소개(학력·경력·연락처·한 줄 소개) | `src/data/aboutData.ts` |
+| 홈 화면의 이름·한 줄 소개 | `src/data/aboutData.ts` |
 | 토론 샘플 글·주제 | `src/data/discussionData.ts` |
 
 따옴표 안의 글자만 바꾸면 됩니다. 논문·자료는 파일 업로드가 아니라 **링크**(Google Drive 등)로 연결합니다.
