@@ -73,5 +73,13 @@ service cloud.firestore {
           || get(/databases/$(database)/documents/posts/$(postId)).data.authorId == request.auth.uid);
       }
     }
+
+    // 지식 자산화 관리자 페이지: 관리자만 읽고 쓴다
+    match /knowledge_input/{docId} {
+      allow read, write: if isAdmin();
+    }
+    match /knowledge_output/{docId} {
+      allow read, write: if isAdmin();
+    }
   }
 }
